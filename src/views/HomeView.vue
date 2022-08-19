@@ -18,6 +18,9 @@ body {
   color: #fff;
   font-family: sans-serif;
   text-align: center;
+  display: flex;
+  place-items: center;
+  max-height: 100vh;
 }
 .grid-content {
   display: grid;
