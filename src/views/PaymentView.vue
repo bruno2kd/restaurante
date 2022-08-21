@@ -155,4 +155,9 @@ const cancelOrder = () => {
   /* border: 1px solid #b15eff; */
   box-shadow: 0 0 10px #ac71ce;
 }
+
+/* form {
+  margin: 70px 70px 0 70px;
+  background-color: #ac71ce;
+} */
 </style>

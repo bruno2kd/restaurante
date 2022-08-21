@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import pedidos from '../assets/data/pedidos.js'
+import pedidos from "../assets/data/pedidos.js";
 
 export const useCounterStore = defineStore({
-  id: "conta",
+  id: "pedidos",
   state: () => ({
     counter: 0,
-    pedidos
+    pedidos,
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,

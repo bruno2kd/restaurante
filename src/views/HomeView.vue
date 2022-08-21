@@ -1,14 +1,14 @@
 <script setup>
-import { storeToRefs, mapActions } from "pinia";
+import { storeToRefs } from "pinia";
 import Table from "../components/Table.vue";
-import { useCounterStore } from "@/stores/counter";
-const main = useCounterStore();
-const { counter, pedidos, doubleCount } = storeToRefs(main);
+import { useMesasStore } from "../stores/mesas";
+const main = useMesasStore();
+const { mesas } = storeToRefs(main);
 </script>
 
 <template>
   <div class="grid-content">
-    <Table v-for="mesa in pedidos" :key="mesa.id" :mesa="mesa"></Table>
+    <Table v-for="mesa in mesas" :key="mesa.id" :mesa="mesa"></Table>
   </div>
 </template>
 
@@ -72,7 +72,7 @@ body {
 @media only screen and (max-width: 533px) {
   .grid-content {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(6, minmax(120px, auto));
+    grid-template-rows: repeat(4, minmax(120px, auto));
     max-width: 500px;
     /* center */
     margin-left: 10px;
