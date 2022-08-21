@@ -1,6 +1,6 @@
 <script setup>
-import Plus from "../components/UI/Plus.vue";
-import DollarSign from "../components/UI/DollarSign.vue";
+import PlusIcon from "../components/UI/PlusIcon.vue";
+import DollarIcon from "../components/UI/DollarIcon.vue";
 
 defineProps({
   mesa: Object,
@@ -13,12 +13,12 @@ defineProps({
     <p v-if="mesa.total">R$ {{ (mesa.total / 100).toFixed(2) }}</p>
     <div class="icon-table plus-component">
       <router-link :to="{ name: 'new-order', params: { mesaId: mesa.id } }">
-        <Plus />
+        <PlusIcon />
       </router-link>
     </div>
     <div class="icon-table dollar-component">
       <router-link :to="{ name: 'payment', params: { mesaId: mesa.id } }">
-        <DollarSign />
+        <DollarIcon />
       </router-link>
     </div>
   </div>

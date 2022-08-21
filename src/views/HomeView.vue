@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import Table from "../components/Table.vue";
+import TableComponent from "../components/TableComponent.vue";
 import { useMesasStore } from "../stores/mesas";
 const main = useMesasStore();
 const { mesas } = storeToRefs(main);
@@ -8,7 +8,11 @@ const { mesas } = storeToRefs(main);
 
 <template>
   <div class="grid-content">
-    <Table v-for="mesa in mesas" :key="mesa.id" :mesa="mesa"></Table>
+    <table-component
+      v-for="mesa in mesas"
+      :key="mesa.id"
+      :mesa="mesa"
+    ></table-component>
   </div>
 </template>
 

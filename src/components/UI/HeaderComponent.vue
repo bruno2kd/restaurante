@@ -1,3 +1,9 @@
+<script setup>
+import { useCurrentTime } from "../../composables/useCurrentTime";
+
+const { currentTime } = useCurrentTime();
+</script>
+
 <template>
   <header>
     <div class="row">
@@ -6,7 +12,9 @@
       </div>
       <div class="col-50 timestamp">
         <h6>Quinta Feira</h6>
-        <h6>17:00</h6>
+        <h6>
+          {{ currentTime }}
+        </h6>
       </div>
     </div>
   </header>
