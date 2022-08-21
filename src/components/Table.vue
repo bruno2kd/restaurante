@@ -12,12 +12,14 @@ defineProps({
     <h6>Mesa {{ mesa.id }}</h6>
     <p v-if="mesa.total">R$ {{ (mesa.total / 100).toFixed(2) }}</p>
     <div class="icon-table plus-component">
-      <router-link :to="{ name: 'newOrder', params: { mesaId: mesa.id } }">
+      <router-link :to="{ name: 'new-order', params: { mesaId: mesa.id } }">
         <Plus />
       </router-link>
     </div>
     <div class="icon-table dollar-component">
-      <DollarSign />
+      <router-link :to="{ name: 'payment', params: { mesaId: mesa.id } }">
+        <DollarSign />
+      </router-link>
     </div>
   </div>
 </template>

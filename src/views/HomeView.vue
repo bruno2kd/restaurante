@@ -4,12 +4,11 @@ import Table from "../components/Table.vue";
 import { useCounterStore } from "@/stores/counter";
 const main = useCounterStore();
 const { counter, pedidos, doubleCount } = storeToRefs(main);
-console.log(pedidos);
 </script>
 
 <template>
   <div class="grid-content">
-    <Table v-for="mesa in pedidos" :key="i" :mesa="mesa"></Table>
+    <Table v-for="mesa in pedidos" :key="mesa.id" :mesa="mesa"></Table>
   </div>
 </template>
 
@@ -29,7 +28,7 @@ body {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   max-width: 960px;
-  margin: 0 auto;
+  margin: 100px auto 0 auto;
   text-align: center;
   /* center */
 }
@@ -62,6 +61,8 @@ body {
     grid-template-rows: repeat(4, minmax(150px, auto));
     max-width: 850px;
     /* center */
+    margin-left: 20px;
+    margin-right: 20px;
   }
   .grid-content div {
     width: 150px;
@@ -74,6 +75,8 @@ body {
     grid-template-rows: repeat(6, minmax(120px, auto));
     max-width: 500px;
     /* center */
+    margin-left: 10px;
+    margin-right: 10px;
   }
   .grid-content div {
     width: 120px;
