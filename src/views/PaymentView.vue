@@ -1,12 +1,24 @@
 <script setup>
-import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { ref, computed, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { formatTime } from "../assets/helpers/formatTime";
 import FormCard from "../components/UI/FormCard.vue";
+import { useTablesStore } from "../stores/tables";
+const main = useTablesStore();
+const { tables } = storeToRefs(main);
 
 const router = useRouter();
 const route = useRoute();
 
+// data
+const table = ref();
 const payment = ref(0);
+
+//computed
+const isFormValid = computed(() => payment.value > 0);
+
+// function
 const submitOrder = () => {
   console.log("submit");
   console.log(route.params.tableId);
@@ -15,6 +27,11 @@ const cancelOrder = () => {
   console.log("cancel");
   router.push({ name: "home" });
 };
+
+// lifecycle hooks
+onBeforeMount(() => {
+  table.value = tables.value.find((x) => x.id === route.params.tableId);
+});
 </script>
 
 <template>
@@ -38,21 +55,21 @@ const cancelOrder = () => {
         </div>
       </div>
       <div class="items-payment dashed">
-        <div class="row">
+        <div v-for="item in table.items" :key="item.id" class="row">
           <div class="col-20">
-            <p>Cerveja Preta</p>
+            <p>{{ item.name }}</p>
           </div>
           <div class="col-20 center">
-            <p>2</p>
+            <p>{{ item.quantity }}</p>
           </div>
           <div class="col-20 center">
-            <p>15:32</p>
+            <p>{{ formatTime(item.updatedAt) }}</p>
           </div>
           <div class="col-20 right">
-            <p>R$10.00</p>
+            <p>R${{ (item.price / 100).toFixed(2) }}</p>
           </div>
           <div class="col-20 right">
-            <p>R$20.00</p>
+            <p>R${{ ((item.price * item.quantity) / 100).toFixed(2) }}</p>
           </div>
         </div>
       </div>
@@ -64,7 +81,7 @@ const cancelOrder = () => {
         </div>
         <div class="row">
           <div class="col-100 right">
-            <p>R$20.00</p>
+            <p>R${{ (table.total / 100).toFixed(2) }}</p>
           </div>
         </div>
       </div>
@@ -125,7 +142,7 @@ const cancelOrder = () => {
         <div class="col-50">
           <div class="btn-container">
             <input @click="cancelOrder" type="button" value="Cancelar" />
-            <input type="submit" value="Confirmar" />
+            <input type="submit" value="Confirmar" :disabled="!isFormValid" />
           </div>
         </div>
       </div>
@@ -148,6 +165,7 @@ const cancelOrder = () => {
   border-width: 1px;
   border-color: rgb(160, 160, 255);
   text-align: right;
+  width: 75%;
 }
 .items-payment input[type="text"]:focus {
   background-color: #cd9dfa;
@@ -156,8 +174,15 @@ const cancelOrder = () => {
   box-shadow: 0 0 10px #ac71ce;
 }
 
-/* form {
-  margin: 70px 70px 0 70px;
-  background-color: #ac71ce;
-} */
+input[type="submit"]:disabled {
+  background-color: gray;
+  cursor: auto;
+}
+
+@media only screen and (max-width: 533px) {
+  h3,
+  p {
+    font-size: 0.8em !important;
+  }
+}
 </style>

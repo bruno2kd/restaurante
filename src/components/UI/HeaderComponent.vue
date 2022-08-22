@@ -24,7 +24,7 @@ onMounted(() => {
 <template>
   <header>
     <div class="row">
-      <div class="col-25">
+      <div class="col-25 name">
         <h3>Olá, John Doe</h3>
       </div>
       <div class="col-50 timestamp">
@@ -47,9 +47,15 @@ header {
   text-align: center;
 }
 @media screen and (max-width: 600px) {
+  header {
+    padding: 15px 10px;
+  }
   .timestamp {
     text-align: right;
-    width: 75%;
+    width: 50%;
+  }
+  .name {
+    width: 50%;
   }
 }
 </style>
