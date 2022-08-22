@@ -1,17 +1,17 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import TableComponent from "../components/TableComponent.vue";
-import { useMesasStore } from "../stores/mesas";
-const main = useMesasStore();
-const { mesas } = storeToRefs(main);
+import { useTablesStore } from "../stores/tables";
+const main = useTablesStore();
+const { tables } = storeToRefs(main);
 </script>
 
 <template>
   <div class="grid-content">
     <table-component
-      v-for="mesa in mesas"
-      :key="mesa.id"
-      :mesa="mesa"
+      v-for="table in tables"
+      :key="table.id"
+      :table="table"
     ></table-component>
   </div>
 </template>
@@ -76,12 +76,14 @@ body {
   .grid-content {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, minmax(120px, auto));
-    grid-column-gap: 5px;
+    grid-column-gap: 4px;
 
-    max-width: 500px;
+    max-width: 100%;
     /* center */
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+      margin-top: 10px
+
   }
   .grid-content div {
     width: 120px;

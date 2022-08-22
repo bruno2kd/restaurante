@@ -1,5 +1,7 @@
 import { ref, onBeforeUnmount, onMounted } from "vue";
+import { formatTime } from "../assets/helpers/formatTime";
 
+// nao precisava ser composable, mas fiz para explorar mais as features do vue3
 export const useCurrentTime = () => {
   // data
   const currentTime = ref();
@@ -7,9 +9,7 @@ export const useCurrentTime = () => {
   // function
   const updateCurrentTime = () => {
     const current = new Date();
-    const hour = current.getHours();
-    const minutes = String(current.getMinutes()).padStart(2, "0");
-    currentTime.value = `${hour}:${minutes}`;
+    currentTime.value = formatTime(current);
   };
 
   onMounted(() => {

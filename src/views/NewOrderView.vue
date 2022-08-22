@@ -1,20 +1,27 @@
 <script setup>
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import CategoryMenu from "../components/CategoryMenu.vue";
 import FormCard from "../components/UI/FormCard.vue";
-import cardapio from "../assets/data/cardapio.js";
+import menu from "../assets/data/menu.js";
 
 import { useOrdersStore } from "../stores/orders";
 const orders = useOrdersStore();
 
 const router = useRouter();
+const route = useRoute();
 
+// computed
+const isValidForm = computed(() => orders.validItemsArr.length > 0);
+
+// functions
 const submitOrder = () => {
-  console.log("submit");
-  orders.addNewOrder("teste");
+  const tableId = route.params.tableId;
+  orders.addNewOrder(tableId);
+  router.push({ name: "home" });
 };
 const cancelOrder = () => {
-  console.log("cancel");
+  orders.resetForm()
   router.push({ name: "home" });
 };
 </script>
@@ -23,16 +30,17 @@ const cancelOrder = () => {
   <form-card>
     <form @submit.prevent="submitOrder">
       <category-menu
-        v-for="category in cardapio"
+        v-for="category in menu"
         :key="category.name"
         :category="category"
       />
       <div class="row">
+        <pre>{{ isValidForm }}</pre>
         <div class="col-25"></div>
         <div class="col-50">
           <div class="btn-container">
             <input @click="cancelOrder" type="button" value="Cancelar" />
-            <input type="submit" value="Confirmar" />
+            <input type="submit" value="Confirmar" :disabled="!isValidForm" />
           </div>
         </div>
       </div>
@@ -43,5 +51,9 @@ const cancelOrder = () => {
 <style scoped>
 .btn-container {
   text-align: center;
+}
+.btn-container input[type="submit"]:disabled {
+  background-color: gray;
+  cursor: auto;
 }
 </style>

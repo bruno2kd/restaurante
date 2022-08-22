@@ -1,13 +1,15 @@
 <script setup>
 import QuantityInput from "../components/QuantityInput.vue";
+import { useOrdersStore } from "../stores/orders";
+const orders = useOrdersStore();
+
 const props = defineProps({
   item: Object,
 });
-// data
-const emit = defineEmits(["item"]);
 
+// data
 const quantityHandler = (qnt) => {
-  emit("item", {
+  orders.orderFormItemsUpdate({
     ...props.item,
     quantity: qnt,
   });

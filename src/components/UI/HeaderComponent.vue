@@ -1,7 +1,24 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import { useCurrentTime } from "../../composables/useCurrentTime";
 
 const { currentTime } = useCurrentTime();
+const dayOfTheWeek = ref();
+
+onMounted(() => {
+  const semana = [
+    "Domingo",
+    "Segunda-Feira",
+    "Terça-Feira",
+    "Quarta-Feira",
+    "Quinta-Feira",
+    "Sexta-Feira",
+    "Sábado",
+  ];
+
+  const d = new Date();
+  dayOfTheWeek.value = semana[d.getDay()];
+});
 </script>
 
 <template>
@@ -11,7 +28,7 @@ const { currentTime } = useCurrentTime();
         <h3>Olá, John Doe</h3>
       </div>
       <div class="col-50 timestamp">
-        <h6>Quinta Feira</h6>
+        <h6>{{ dayOfTheWeek }}</h6>
         <h6>
           {{ currentTime }}
         </h6>

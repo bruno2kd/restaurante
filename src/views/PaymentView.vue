@@ -9,7 +9,7 @@ const route = useRoute();
 const payment = ref(0);
 const submitOrder = () => {
   console.log("submit");
-  console.log(route.params.mesaId);
+  console.log(route.params.tableId);
 };
 const cancelOrder = () => {
   console.log("cancel");
@@ -113,7 +113,7 @@ const cancelOrder = () => {
       <div class="items-payment">
         <div class="row">
           <div class="col-50">
-            <h3>Mesa {{ route.params.mesaId }}</h3>
+            <h3>Mesa {{ route.params.tableId }}</h3>
           </div>
           <div class="col-50 right">
             <span>R$</span><input v-model="payment" type="text" />

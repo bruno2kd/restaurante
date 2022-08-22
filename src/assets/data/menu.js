@@ -1,4 +1,4 @@
-const mesa = [
+const menu = [
   {
     name: "Bebidas",
     items: [
@@ -33,21 +33,21 @@ const mesa = [
         name: "Hambúrgues",
         price: 3500,
         quantity: 1,
-        category: "Bebidas",
+        category: "Lanches",
       },
       {
         id: "5",
         name: "Costela de Porco",
         price: 4800,
         quantity: 1,
-        category: "Bebidas",
+        category: "Lanches",
       },
       {
         id: "6",
         name: "Sopa",
         price: 2200,
         quantity: 2,
-        category: "Bebidas",
+        category: "Lanches",
       },
     ],
   },
@@ -59,21 +59,21 @@ const mesa = [
         name: "Batata Frita",
         price: 1900,
         quantity: 1,
-        category: "Bebidas",
+        category: "Porções",
       },
       {
         id: "7",
         name: "Onion Rings",
         price: 1800,
         quantity: 1,
-        category: "Bebidas",
+        category: "Porções",
       },
       {
         id: "8",
         name: "Nuggets",
         price: 1200,
         quantity: 2,
-        category: "Bebidas",
+        category: "Porções",
       },
     ],
   },
@@ -85,24 +85,24 @@ const mesa = [
         name: "Alface",
         price: 1100,
         quantity: 1,
-        category: "Bebidas",
+        category: "Saladas",
       },
       {
         id: "10",
         name: "Rúcula",
         price: 1200,
         quantity: 1,
-        category: "Bebidas",
+        category: "Saladas",
       },
       {
         id: "11",
         name: "Brócolis",
         price: 1300,
         quantity: 2,
-        category: "Bebidas",
+        category: "Saladas",
       },
     ],
   },
 ];
 
-export default mesa;
+export default menu;

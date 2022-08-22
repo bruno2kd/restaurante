@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/new-order/:mesaId",
+      path: "/new-order/:tableId",
       name: "new-order",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
@@ -18,7 +18,7 @@ const router = createRouter({
       component: () => import("../views/NewOrderView.vue"),
     },
     {
-      path: "/payment/:mesaId",
+      path: "/payment/:tableId",
       name: "payment",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route

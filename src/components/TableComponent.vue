@@ -1,27 +1,36 @@
 <script setup>
+import { useRouter } from "vue-router";
 import PlusIcon from "../components/UI/PlusIcon.vue";
 import DollarIcon from "../components/UI/DollarIcon.vue";
+import { formatTime } from "../assets/helpers/formatTime";
 
-defineProps({
-  mesa: Object,
+const props = defineProps({
+  table: Object,
 });
+
+const router = useRouter();
+
+const goToNamedRoute = (name) => {
+  router.push({ name, params: { tableId: props.table.id } });
+};
 </script>
 
 <template>
-  <div class="table">
-    <h6>{{ mesa.timestamp }}</h6>
-    <p v-if="mesa.total">R$ {{ (mesa.total / 100).toFixed(2) }}</p>
-    <h5>Mesa {{ mesa.id }}</h5>
-    <div class="icon-table plus-component">
-      <router-link :to="{ name: 'new-order', params: { mesaId: mesa.id } }">
-        <PlusIcon />
-      </router-link>
+  <div class="table" v-if="table.total > 0">
+    <div class="table-content">
+      <h6>{{ formatTime(table.updatedAt) }}</h6>
+      <p v-if="table.total">R$ {{ (table.total / 100).toFixed(2) }}</p>
+      <h5>Mesa {{ table.id }}</h5>
     </div>
-    <div class="icon-table dollar-component">
-      <router-link :to="{ name: 'payment', params: { mesaId: mesa.id } }">
-        <DollarIcon />
-      </router-link>
+    <div class="icon-table plus-component" @click="goToNamedRoute('new-order')">
+      <PlusIcon />
     </div>
+    <div class="icon-table dollar-component" @click="goToNamedRoute('payment')">
+      <DollarIcon />
+    </div>
+  </div>
+  <div class="table empty" v-else @click="goToNamedRoute('new-order')">
+    <h3 class="head">Mesa {{ table.id }}</h3>
   </div>
 </template>
 
@@ -33,6 +42,9 @@ defineProps({
   background: gold;
   border-radius: 50%;
 }
+.table.empty {
+  cursor: pointer;
+}
 .plus-component {
   bottom: -10px;
   left: 30%;
@@ -40,6 +52,10 @@ defineProps({
 .dollar-component {
   bottom: 28px;
   left: 60%;
+}
+.head {
+  left: 0%;
+  top: 38%;
 }
 .icon-table {
   position: absolute;
@@ -69,6 +85,9 @@ defineProps({
     width: 40px;
     height: 40px;
   }
+  .head {
+    top: 25%;
+  }
 }
 @media only screen and (max-width: 533px) {
   .plus-component {
@@ -82,6 +101,10 @@ defineProps({
   .icon-table svg {
     width: 25px;
     height: 25px;
+  }
+  .table-content {
+    position: absolute;
+    top: 22px;
   }
 }
 </style>

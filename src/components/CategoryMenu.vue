@@ -9,17 +9,7 @@ defineProps({
 });
 // data
 const open = ref(true);
-const orderItems = ref([]); // esse order items vai no pinia
 
-// function
-const itemHandler = (item) => {
-  const i = orderItems.value.findIndex((orderItem) => orderItem.id === item.id);
-  if (i > -1) {
-    orderItems.value[i] = item;
-  } else {
-    orderItems.value.push(item);
-  }
-};
 </script>
 
 <template>
@@ -36,7 +26,6 @@ const itemHandler = (item) => {
         v-for="bebida in category.items"
         :key="bebida.id"
         :item="bebida"
-        @item="itemHandler"
       />
     </div>
   </Transition>
