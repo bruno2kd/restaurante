@@ -22,7 +22,7 @@ const pedidos = [
       },
     ],
     total: 4000,
-    date: "aqui vai", // data do ultimo pedido
+    timestamp: "25:09",
   },
 ];
 

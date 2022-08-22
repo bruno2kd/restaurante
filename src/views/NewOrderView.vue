@@ -2,11 +2,16 @@
 import { useRouter } from "vue-router";
 import CategoryMenu from "../components/CategoryMenu.vue";
 import FormCard from "../components/UI/FormCard.vue";
-import data from "../assets/data/cardapio.js";
+import cardapio from "../assets/data/cardapio.js";
+
+import { useOrdersStore } from "../stores/orders";
+const orders = useOrdersStore();
 
 const router = useRouter();
+
 const submitOrder = () => {
   console.log("submit");
+  orders.addNewOrder("teste");
 };
 const cancelOrder = () => {
   console.log("cancel");
@@ -18,7 +23,7 @@ const cancelOrder = () => {
   <form-card>
     <form @submit.prevent="submitOrder">
       <category-menu
-        v-for="category in data"
+        v-for="category in cardapio"
         :key="category.name"
         :category="category"
       />

@@ -9,8 +9,9 @@ defineProps({
 
 <template>
   <div class="table">
-    <h6>Mesa {{ mesa.id }}</h6>
+    <h6>{{ mesa.timestamp }}</h6>
     <p v-if="mesa.total">R$ {{ (mesa.total / 100).toFixed(2) }}</p>
+    <h5>Mesa {{ mesa.id }}</h5>
     <div class="icon-table plus-component">
       <router-link :to="{ name: 'new-order', params: { mesaId: mesa.id } }">
         <PlusIcon />

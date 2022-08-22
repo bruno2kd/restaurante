@@ -40,7 +40,6 @@ body {
   background-color: rgb(69, 51, 51);
   color: #fff;
   padding: 30px;
-  border-color: green;
   width: 200px;
 }
 .grid-content div:nth-child(even) {
@@ -77,6 +76,8 @@ body {
   .grid-content {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, minmax(120px, auto));
+    grid-column-gap: 5px;
+
     max-width: 500px;
     /* center */
     margin-left: 10px;

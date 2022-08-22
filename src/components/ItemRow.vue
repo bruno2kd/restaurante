@@ -1,9 +1,17 @@
 <script setup>
 import QuantityInput from "../components/QuantityInput.vue";
-defineProps({
+const props = defineProps({
   item: Object,
 });
 // data
+const emit = defineEmits(["item"]);
+
+const quantityHandler = (qnt) => {
+  emit("item", {
+    ...props.item,
+    quantity: qnt,
+  });
+};
 </script>
 
 <template>
@@ -15,7 +23,7 @@ defineProps({
       <p>R$ {{ (item.price / 100).toFixed(2) }}</p>
     </div>
     <div class="col-25 right">
-      <quantity-input />
+      <quantity-input @quantity="quantityHandler" />
     </div>
   </div>
 </template>

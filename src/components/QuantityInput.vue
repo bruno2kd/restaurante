@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+const emit = defineEmits(["quantity"]);
 
 // data
 const quantity = ref(0);
@@ -8,6 +9,7 @@ const quantity = ref(0);
 const sumQuantity = (val) => {
   if (quantity.value === 0 && val === -1) return;
   quantity.value += val;
+  emit("quantity", quantity.value);
 };
 </script>
 

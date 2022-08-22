@@ -2,7 +2,7 @@
 @import './form.css';
 
 #app {
-
+  width: 100%;
   font-weight: normal;
 }
 
