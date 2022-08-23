@@ -21,7 +21,7 @@ const submitOrder = () => {
   router.push({ name: "home" });
 };
 const cancelOrder = () => {
-  orders.resetForm()
+  orders.resetForm();
   router.push({ name: "home" });
 };
 </script>

@@ -6,6 +6,34 @@ import { ref } from "vue";
 export const useTablesStore = defineStore("tables", () => {
   const tables = ref(tablesData);
 
+  function createTablePayment(tableId, payment) {
+    let billPaid = false;
+    tables.value = tables.value.map((x) => {
+      if (x.id !== tableId) return x;
+
+      x.payments = [...x.payments, { timestamp: new Date(), value: payment }];
+
+      // verificar se a conta fechou
+      console.log(x.payments);
+      const totalPaid = x.payments.reduce((sum, x) => sum + x.value, 0);
+
+      if (totalPaid == x.total) {
+        x = {
+          id: tableId,
+          items: [],
+          paid: 0,
+          totalToBePaid: 0,
+          payments: [],
+        };
+        billPaid = true;
+      }
+
+      return x;
+    });
+    return billPaid;
+    // api.payments.create()
+  }
+
   function upsertTable(tableId, items) {
     const i = tables.value.findIndex((table) => table.id === tableId);
     const concatItems = tables.value[i].items.concat(items);
@@ -51,5 +79,6 @@ export const useTablesStore = defineStore("tables", () => {
   return {
     tables,
     upsertTable,
+    createTablePayment,
   };
 });

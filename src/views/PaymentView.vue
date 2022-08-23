@@ -1,37 +1,68 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { formatTime } from "../assets/helpers/formatTime";
 import FormCard from "../components/UI/FormCard.vue";
 import { useTablesStore } from "../stores/tables";
-const main = useTablesStore();
-const { tables } = storeToRefs(main);
+const tableStore = useTablesStore();
+const { tables } = storeToRefs(tableStore);
 
 const router = useRouter();
 const route = useRoute();
 
 // data
-const table = ref();
-const payment = ref(0);
+// const table = ref();
+// const totalToBePaid = ref();
+const paymentInputRef = ref(0);
+const isFormValid = ref(false);
 
-//computed
-const isFormValid = computed(() => payment.value > 0);
+// valor da conta nao pode ser maior que o valor restante
+// e mascara o valor
+const paymentInputHandler = () => {
+  const newValue = paymentInputRef.value.value;
+  let newPayment = Number(newValue.replace(/\D/g, ""));
+  if (newPayment > totalToBePaid.value) {
+    newPayment = totalToBePaid.value;
+  }
+  const formatedValue = (newPayment / 100).toFixed(2);
+  paymentInputRef.value.value = formatedValue;
+  // check if valid
+  isFormValid.value = newPayment > 0;
+};
 
+const table = computed(() => {
+  const tableId = route.params.tableId;
+  return tables.value.find((x) => x.id === tableId);
+});
+
+const totalToBePaid = computed(() => {
+  const totalPayments = table.value.payments.reduce(
+    (sum, _payment) => sum + _payment.value,
+    0
+  );
+  return table.value.total - totalPayments;
+});
+
+// TODO: AQUI COMECA A DELETAR AS COISAS
 // function
 const submitOrder = () => {
-  console.log("submit");
-  console.log(route.params.tableId);
+  const tableId = route.params.tableId;
+  const paidValue = Math.round(paymentInputRef.value.value * 100);
+
+  // se retornar positivo, a conta foi paga na totalidade
+  const billPaid = tableStore.createTablePayment(tableId, paidValue);
+  paymentInputRef.value.value = 0;
+  if (billPaid) {
+    router.push({ name: "home" });
+  }
 };
 const cancelOrder = () => {
-  console.log("cancel");
   router.push({ name: "home" });
 };
 
 // lifecycle hooks
-onBeforeMount(() => {
-  table.value = tables.value.find((x) => x.id === route.params.tableId);
-});
+onMounted(() => paymentInputRef.value.focus());
 </script>
 
 <template>
@@ -94,24 +125,13 @@ onBeforeMount(() => {
             <h3>PAGAMENTOS</h3>
           </div>
         </div>
-        <div class="row">
+        <div v-for="(payment, i) in table.payments" :key="i" class="row">
           <div class="col-50">
-            <p>02/08/1989 16:35</p>
+            <!-- TODO: pegar o formato certo -->
+            <p>{{ formatTime(payment.timestamp) }}</p>
           </div>
           <div class="col-50 right">
-            <p>R$20.00</p>
-          </div>
-        </div>
-      </div>
-      <div class="items-payment dashed">
-        <div class="row">
-          <div class="col-100 right">
-            <h3>TOTAL RESTANTE</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-100 right">
-            <p>R$20.00</p>
+            <p>- R${{ (payment.value / 100).toFixed(2) }}</p>
           </div>
         </div>
       </div>
@@ -123,7 +143,7 @@ onBeforeMount(() => {
         </div>
         <div class="row">
           <div class="col-100 right">
-            <p>R$20.00</p>
+            <p>R${{ (totalToBePaid / 100).toFixed(2) }}</p>
           </div>
         </div>
       </div>
@@ -133,7 +153,12 @@ onBeforeMount(() => {
             <h3>Mesa {{ route.params.tableId }}</h3>
           </div>
           <div class="col-50 right">
-            <span>R$</span><input v-model="payment" type="text" />
+            <span>R$</span
+            ><input
+              ref="paymentInputRef"
+              type="text"
+              @input="paymentInputHandler"
+            />
           </div>
         </div>
       </div>

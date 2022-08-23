@@ -15,7 +15,7 @@ export const useOrdersStore = defineStore("orders", () => {
   function addNewOrder(tableId) {
     const tables = useTablesStore();
     tables.upsertTable(tableId, validItemsArr.value);
-    resetForm()
+    resetForm();
     // call api to register order
     // api.orders.create()
   }
@@ -24,6 +24,10 @@ export const useOrdersStore = defineStore("orders", () => {
     const i = orderFormItems.value.findIndex(
       (orderItem) => orderItem.id === item.id
     );
+    item = {
+      ...item,
+      updatedAt: new Date(),
+    };
     if (i > -1) {
       orderFormItems.value[i] = item;
     } else {
@@ -39,6 +43,6 @@ export const useOrdersStore = defineStore("orders", () => {
     validItemsArr,
     addNewOrder,
     orderFormItemsUpdate,
-    resetForm
+    resetForm,
   };
 });
