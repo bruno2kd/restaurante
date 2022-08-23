@@ -8,5 +8,3 @@ const payments = [
 ];
 
 export default payments;
-
-//TODO: tirar isso aqui

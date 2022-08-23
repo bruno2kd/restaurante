@@ -1,6 +1,10 @@
-# restaurante-convenia
+# restaurante
 
 This template should help get you started developing with Vue 3 in Vite.
+
+Praticando com vue3 e Pinia (nunca tinha feito nada com pinia antes)
+
+Complementando o teste to tip-calculator que está neste repositorio: https://gitlab.com/bruno2kd/convenia-frontend-assessment
 
 ## Recommended IDE Setup
 

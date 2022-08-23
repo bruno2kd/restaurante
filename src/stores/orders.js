@@ -1,11 +1,9 @@
 import { defineStore } from "pinia";
-import ordersDataList from "../assets/data/pedidos.js";
 import { useTablesStore } from "./tables";
 
 import { ref, computed } from "vue";
 
 export const useOrdersStore = defineStore("orders", () => {
-  const ordersData = ref(ordersDataList); // TODO: pode precisar dps
   const orderFormItems = ref([]);
 
   const validItemsArr = computed(() =>

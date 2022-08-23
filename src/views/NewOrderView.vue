@@ -30,12 +30,12 @@ const cancelOrder = () => {
   <form-card>
     <form @submit.prevent="submitOrder">
       <category-menu
-        v-for="category in menu"
+        v-for="(category, i) in menu"
         :key="category.name"
         :category="category"
+        :index="i"
       />
       <div class="row">
-        <pre>{{ isValidForm }}</pre>
         <div class="col-25"></div>
         <div class="col-50">
           <div class="btn-container">

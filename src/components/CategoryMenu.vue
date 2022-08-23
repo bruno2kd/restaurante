@@ -4,12 +4,12 @@ import ItemRow from "./ItemRow.vue";
 import ArrowDown from "./UI/ArrowDown.vue";
 import ArrowUp from "./UI/ArrowUp.vue";
 
-defineProps({
+const props = defineProps({
   category: Object,
+  index: Number,
 });
 // data
-const open = ref(true);
-
+const open = ref(props.index < 2);
 </script>
 
 <template>

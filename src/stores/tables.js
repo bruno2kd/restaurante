@@ -14,7 +14,6 @@ export const useTablesStore = defineStore("tables", () => {
       x.payments = [...x.payments, { timestamp: new Date(), value: payment }];
 
       // verificar se a conta fechou
-      console.log(x.payments);
       const totalPaid = x.payments.reduce((sum, x) => sum + x.value, 0);
 
       if (totalPaid == x.total) {

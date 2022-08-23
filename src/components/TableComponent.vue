@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import PlusIcon from "../components/UI/PlusIcon.vue";
 import DollarIcon from "../components/UI/DollarIcon.vue";
@@ -10,6 +11,14 @@ const props = defineProps({
 
 const router = useRouter();
 
+const totalToBePaid = computed(() => {
+  const paid = props.table.payments.reduce(
+    (sum, payment) => sum + payment.value,
+    0
+  );
+  return props.table.total - paid;
+});
+
 const goToNamedRoute = (name) => {
   router.push({ name, params: { tableId: props.table.id } });
 };
@@ -19,7 +28,7 @@ const goToNamedRoute = (name) => {
   <div class="table" v-if="table.total > 0">
     <div class="table-content">
       <h6>{{ formatTime(table.updatedAt) }}</h6>
-      <p v-if="table.total">R$ {{ (table.total / 100).toFixed(2) }}</p>
+      <p v-if="table.total">R$ {{ (totalToBePaid / 100).toFixed(2) }}</p>
       <h5>Mesa {{ table.id }}</h5>
     </div>
     <div class="icon-table plus-component" @click="goToNamedRoute('new-order')">

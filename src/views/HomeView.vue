@@ -16,7 +16,7 @@ const { tables } = storeToRefs(main);
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 body {
   color: #fff;
   font-family: sans-serif;
@@ -43,7 +43,7 @@ body {
   width: 200px;
 }
 .grid-content div:nth-child(even) {
-  background-color: rgb(103, 103, 154);
+  background-color: $conveniaPrimaryDark;
 }
 
 @media only screen and (max-width: 880px) {
@@ -82,8 +82,7 @@ body {
     /* center */
     margin-left: 2px;
     margin-right: 2px;
-      margin-top: 10px
-
+    margin-top: 10px;
   }
   .grid-content div {
     width: 120px;

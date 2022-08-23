@@ -1,10 +1,11 @@
 <script setup>
-import { storeToRefs } from "pinia";
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { formatTime } from "../assets/helpers/formatTime";
+import { formatTime, formatDate } from "../assets/helpers/formatTime";
 import FormCard from "../components/UI/FormCard.vue";
+import LoadingComponent from "../components/UI/LoadingComponent.vue";
 import { useTablesStore } from "../stores/tables";
+import { storeToRefs } from "pinia";
 const tableStore = useTablesStore();
 const { tables } = storeToRefs(tableStore);
 
@@ -12,10 +13,9 @@ const router = useRouter();
 const route = useRoute();
 
 // data
-// const table = ref();
-// const totalToBePaid = ref();
-const paymentInputRef = ref(0);
+const paymentInputRef = ref();
 const isFormValid = ref(false);
+const loadingPayment = ref(false);
 
 // valor da conta nao pode ser maior que o valor restante
 // e mascara o valor
@@ -30,7 +30,7 @@ const paymentInputHandler = () => {
   // check if valid
   isFormValid.value = newPayment > 0;
 };
-
+// acesso a table do array tables na store
 const table = computed(() => {
   const tableId = route.params.tableId;
   return tables.value.find((x) => x.id === tableId);
@@ -44,25 +44,35 @@ const totalToBePaid = computed(() => {
   return table.value.total - totalPayments;
 });
 
-// TODO: AQUI COMECA A DELETAR AS COISAS
 // function
 const submitOrder = () => {
-  const tableId = route.params.tableId;
-  const paidValue = Math.round(paymentInputRef.value.value * 100);
+  loadingPayment.value = true;
+  setTimeout(() => {
+    // timeout para simular pagamento sendo processado
+    const tableId = route.params.tableId;
+    const paidValue = Math.round(paymentInputRef.value.value * 100);
 
-  // se retornar positivo, a conta foi paga na totalidade
-  const billPaid = tableStore.createTablePayment(tableId, paidValue);
-  paymentInputRef.value.value = 0;
-  if (billPaid) {
-    router.push({ name: "home" });
-  }
+    // se retornar positivo, a conta foi paga na totalidade
+    const billPaid = tableStore.createTablePayment(tableId, paidValue);
+    paymentInputRef.value.value = "";
+    isFormValid.value = false;
+    if (billPaid) {
+      router.push({ name: "home" }); // quando a conta tiver sido paga, deve ser redirecionado para home
+    }
+    loadingPayment.value = false;
+  }, 2000);
 };
 const cancelOrder = () => {
   router.push({ name: "home" });
 };
 
 // lifecycle hooks
-onMounted(() => paymentInputRef.value.focus());
+onMounted(() => {
+  paymentInputRef.value.focus(); // focus on input at start for better UX
+  if (table.value.items.length === 0) {
+    router.push({ name: "home" }); // se nao teve order vinculado a mesa, voltar para home
+  }
+});
 </script>
 
 <template>
@@ -116,7 +126,7 @@ onMounted(() => paymentInputRef.value.focus());
           </div>
         </div>
       </div>
-      <div class="items-payment dashed">
+      <div v-if="table.payments.length > 0" class="items-payment dashed">
         <div class="row">
           <div class="col-50">
             <h3>DATA</h3>
@@ -127,8 +137,10 @@ onMounted(() => paymentInputRef.value.focus());
         </div>
         <div v-for="(payment, i) in table.payments" :key="i" class="row">
           <div class="col-50">
-            <!-- TODO: pegar o formato certo -->
-            <p>{{ formatTime(payment.timestamp) }}</p>
+            <p>
+              {{ formatDate(payment.timestamp) }}
+              {{ formatTime(payment.timestamp) }}
+            </p>
           </div>
           <div class="col-50 right">
             <p>- R${{ (payment.value / 100).toFixed(2) }}</p>
@@ -161,13 +173,21 @@ onMounted(() => paymentInputRef.value.focus());
             />
           </div>
         </div>
+        <div class="row">
+          <div class="col-100 right">
+            <p v-if="loadingPayment">Processando pagamento...</p>
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col-25"></div>
         <div class="col-50">
-          <div class="btn-container">
+          <div class="btn-container" v-if="!loadingPayment">
             <input @click="cancelOrder" type="button" value="Cancelar" />
             <input type="submit" value="Confirmar" :disabled="!isFormValid" />
+          </div>
+          <div class="btn-container loading-component" v-else>
+            <loading-component />
           </div>
         </div>
       </div>
@@ -175,7 +195,7 @@ onMounted(() => paymentInputRef.value.focus());
   </form-card>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .items-payment {
   padding: 6px 0 8px;
 }
@@ -185,8 +205,11 @@ onMounted(() => paymentInputRef.value.focus());
 .btn-container {
   text-align: center;
 }
+.loading-component {
+  padding-bottom: 10px;
+}
 .items-payment input[type="text"] {
-  background-color: #e3c5ff;
+  background-color: $conveniaPrimary;
   border-width: 1px;
   border-color: rgb(160, 160, 255);
   text-align: right;
@@ -195,7 +218,6 @@ onMounted(() => paymentInputRef.value.focus());
 .items-payment input[type="text"]:focus {
   background-color: #cd9dfa;
   outline: none !important;
-  /* border: 1px solid #b15eff; */
   box-shadow: 0 0 10px #ac71ce;
 }
 
