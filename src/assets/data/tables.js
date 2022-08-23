@@ -27,7 +27,7 @@ const tables = [
         updatedAt: new Date(),
       },
     ],
-    total: 4000,
+    total: 5200,
     updatedAt: new Date(),
     payments: [
       {
